@@ -55,6 +55,7 @@ function App() {
     }
   };
 
+  // Filetring data
   const applyFilters = () => {
     const filteredJobs = jobListings.filter((job) => {
       return (
@@ -81,6 +82,7 @@ function App() {
     setFilteredJobListings(filteredJobs);
   };
 
+  // Load additional job listings as the user scrolls down the page
   const handleScroll = () => {
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
@@ -112,7 +114,7 @@ function App() {
   return (
     <div className="App">
       <Filter filters={filters} handleFilterChange={handleFilterChange} />
-
+      {/* Job Cards */}
       <div
         className="job-listings"
         style={{
@@ -189,6 +191,7 @@ function App() {
           </div>
         ))}
       </div>
+      {/* Open Job Description when clicked on view job */}
       {viewMore && (
         <FullDescription jobListings={jobListings} setViewMore={setViewMore} />
       )}

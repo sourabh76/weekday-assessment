@@ -2,6 +2,7 @@ import React from "react";
 import "./Filter.css";
 
 const Filter = ({ filters, handleFilterChange }) => {
+  // Input fields for filtering data
   return (
     <div className="filters">
       <input

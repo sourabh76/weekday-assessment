@@ -3,6 +3,7 @@ import Close from "../assets/images/close.svg";
 import "./FullDescription.css";
 
 const FullDescription = ({ jobListings, setViewMore }) => {
+  // Job Description when clicked on view job
   return (
     <div className="full-description">
       <img src={Close} alt="close" onClick={() => setViewMore(false)} />
