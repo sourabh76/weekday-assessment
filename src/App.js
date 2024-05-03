@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import getSymbolFromCurrency from "currency-symbol-map";
 import Timer from "./assets/images/timer.svg";
-import Close from "./assets/images/close.svg";
 import "./App.css";
+import FullDescription from "./components/FullDescription";
+import Filter from "./components/Filter";
 
 function App() {
   const [jobListings, setJobListings] = useState([]);
@@ -110,50 +111,8 @@ function App() {
 
   return (
     <div className="App">
-      <div className="filters">
-        <input
-          type="text"
-          name="role"
-          value={filters.role}
-          onChange={handleFilterChange}
-          placeholder="Roles"
-        />
-        <input
-          type="text"
-          name="totalEmployees"
-          value={filters.totalEmployees}
-          onChange={handleFilterChange}
-          placeholder="Number Of Employees"
-        />
-        <input
-          type="text"
-          name="minExperience"
-          value={filters.minExperience}
-          onChange={handleFilterChange}
-          placeholder="Experience"
-        />
-        <input
-          type="text"
-          name="remote"
-          value={filters.remote}
-          onChange={handleFilterChange}
-          placeholder="Remote"
-        />
-        <input
-          type="text"
-          name="salary"
-          value={filters.salary}
-          onChange={handleFilterChange}
-          placeholder="Minimum Base Salary"
-        />
-        <input
-          type="text"
-          name="companyName"
-          value={filters.companyName}
-          onChange={handleFilterChange}
-          placeholder="Search Company Name"
-        />
-      </div>
+      <Filter filters={filters} handleFilterChange={handleFilterChange} />
+
       <div
         className="job-listings"
         style={{
@@ -231,14 +190,7 @@ function App() {
         ))}
       </div>
       {viewMore && (
-        <div>
-          <div className="full-description">
-            <img src={Close} alt="close" onClick={() => setViewMore(false)} />
-            <h2>Job description</h2>
-            <div>{jobListings[0].jobDetailsFromCompany}</div>
-            <div>hi</div>
-          </div>
-        </div>
+        <FullDescription jobListings={jobListings} setViewMore={setViewMore} />
       )}
     </div>
   );
