@@ -65,14 +65,16 @@ function App() {
             .toLowerCase()
             .includes(filters.companyName.toLowerCase())) &&
         (!filters.remote ||
-          job.remote?.toLowerCase().includes(filters.remote.toLowerCase()) ||
-          job) &&
+          job.location?.toLowerCase().includes(filters.remote.toLowerCase())) &&
         (!filters.totalEmployees ||
           job.totalEmployees
             ?.toLowerCase()
             .includes(filters.totalEmployees.toLowerCase()) ||
           job) &&
-        (!filters.salary || job.minJdSalary >= filters.salary)
+        (!filters.salary ||
+          (job.minJdSalary
+            ? job.minJdSalary >= filters.salary
+            : job.maxJdSalary >= filters.salary))
       );
     });
     setFilteredJobListings(filteredJobs);
@@ -177,7 +179,7 @@ function App() {
               <p className="job-salary">
                 Estimated Salary:{" "}
                 {getSymbolFromCurrency(listing.salaryCurrencyCode)}
-                {`${listing.minJdSalary ? listing.minJdSalary : 0} - ${
+                {`${listing.minJdSalary ? listing.minJdSalary + " - " : ""}${
                   listing.maxJdSalary
                 }  ✅`}
               </p>
@@ -193,9 +195,14 @@ function App() {
               <div className="view-job" onClick={() => setViewMore(true)}>
                 View Job
               </div>
-              <div className="job-experience">
+              <div
+                className="job-experience"
+                style={{
+                  visibility: !listing.minExp ? "hidden" : "visible",
+                }}
+              >
                 <h3>Minimum Experience</h3>
-                <div>{listing.minExp ? listing.minExp : 0} years</div>
+                <div>{listing.minExp} years</div>
               </div>
               <div className="apply-button">
                 <button
@@ -229,6 +236,7 @@ function App() {
             <img src={Close} alt="close" onClick={() => setViewMore(false)} />
             <h2>Job description</h2>
             <div>{jobListings[0].jobDetailsFromCompany}</div>
+            <div>hi</div>
           </div>
         </div>
       )}
