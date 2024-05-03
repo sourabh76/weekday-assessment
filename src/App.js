@@ -175,30 +175,33 @@ function App() {
       </div> */}
       <div className="job-listings">
         {filteredJobListings.map((listing, index) => (
-          <div className="job-card" key={index}>
-            <p>
-              <strong>Job Title:</strong> {listing.jobRole}
-            </p>
-            <p>
-              <strong>Company Name:</strong> {listing.jdUid}
-            </p>
-            <p>
-              <strong>Location:</strong> {listing.location}
-            </p>
-            <p>
-              <strong>Estimated Salary:</strong>{" "}
-              {getSymbolFromCurrency(listing.salaryCurrencyCode)}
-              {`${listing.minJdSalary ? listing.minJdSalary : 0} - ${
-                listing.maxJdSalary
-              }  ✅`}
-            </p>
-            <p>
-              <strong>Job Description:</strong> {listing.jobDetailsFromCompany}
-            </p>
-            <p>
-              <strong>Experience Required:</strong> {listing.minExp}
-            </p>
-            <button>Apply Button/Link</button>
+          <div className="job">
+            <div className="job-card" key={index}>
+              <p>
+                <strong>Job Title:</strong> {listing.jobRole}
+              </p>
+              <p>
+                <strong>Company Name:</strong> {listing.jdUid.slice(-5)}
+              </p>
+              <p>
+                <strong>Location:</strong> {listing.location}
+              </p>
+              <p>
+                <strong>Estimated Salary:</strong>{" "}
+                {getSymbolFromCurrency(listing.salaryCurrencyCode)}
+                {`${listing.minJdSalary ? listing.minJdSalary : 0} - ${
+                  listing.maxJdSalary
+                }  ✅`}
+              </p>
+              <p>
+                <strong>Job Description:</strong>{" "}
+                {listing.jobDetailsFromCompany}
+              </p>
+              <p>
+                <strong>Experience Required:</strong> {listing.minExp}
+              </p>
+              <button>Apply Button/Link</button>
+            </div>
           </div>
         ))}
       </div>
