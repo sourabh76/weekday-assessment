@@ -5,6 +5,7 @@ import Company1 from "./assets/images/company1.svg";
 import Company2 from "./assets/images/company2.svg";
 import Company3 from "./assets/images/company3.svg";
 import Close from "./assets/images/close.svg";
+import DropDown from "./assets/images/drop-down.svg";
 import "./App.css";
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
     minExperience: "",
     companyName: "",
     location: "",
-    remote: false,
+    remote: "",
     techStack: "",
     role: "",
     minBasePay: "",
@@ -65,7 +66,6 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(">>>", data);
       setJobListings((prevListings) => [...prevListings, ...data.jdList]);
     } catch (error) {
       console.error("Error fetching job listings:", error);
@@ -84,7 +84,8 @@ function App() {
           job.location
             .toLowerCase()
             .includes(filters.location.toLowerCase())) &&
-        (!filters.remote || job.remote) &&
+        (!filters.remote ||
+          job.remote.toLowerCase().includes(filters.remote.toLowerCase())) &&
         (!filters.techStack ||
           job.techStack
             .toLowerCase()
@@ -115,7 +116,7 @@ function App() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []); // Add scroll event listener on mount and remove on unmount
+  }, []);
 
   const handleFilterChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -127,74 +128,52 @@ function App() {
 
   return (
     <div className="App">
-      {/* <div className="filters">
-        <label>
-          Min Experience:
-          <input
-            type="text"
-            name="minExperience"
-            value={filters.minExperience}
-            onChange={handleFilterChange}
-          />
-        </label>
-        <label>
-          Company Name:
-          <input
-            type="text"
-            name="companyName"
-            value={filters.companyName}
-            onChange={handleFilterChange}
-          />
-        </label>
-        <label>
-          Location:
-          <input
-            type="text"
-            name="location"
-            value={filters.location}
-            onChange={handleFilterChange}
-          />
-        </label>
-        <label>
-          Remote:
-          <input
-            type="checkbox"
-            name="remote"
-            checked={filters.remote}
-            onChange={handleFilterChange}
-          />
-        </label>
-        <label>
-          Tech Stack:
-          <input
-            type="text"
-            name="techStack"
-            value={filters.techStack}
-            onChange={handleFilterChange}
-          />
-        </label>
-        <label>
-          Role:
-          <input
-            type="text"
-            name="role"
-            value={filters.role}
-            onChange={handleFilterChange}
-          />
-        </label>
-        <label>
-          Min Base Pay:
-          <input
-            type="text"
-            name="minBasePay"
-            value={filters.minBasePay}
-            onChange={handleFilterChange}
-          />
-        </label>
-      </div> */}
+      <div className="filters">
+        <input
+          type="text"
+          name="minExperience"
+          value={filters.role}
+          onChange={handleFilterChange}
+          placeholder="Roles"
+        />
+        <input
+          type="text"
+          name="companyName"
+          value={filters.companyName}
+          onChange={handleFilterChange}
+          placeholder="Number Of Employees"
+        />
+        <input
+          type="text"
+          name="location"
+          value={filters.location}
+          onChange={handleFilterChange}
+          placeholder="Experience"
+        />
+        <input
+          type="text"
+          name="remote"
+          value={filters.remote}
+          onChange={handleFilterChange}
+          placeholder="Remote"
+        />
+        <input
+          type="text"
+          name="techStack"
+          value={filters.techStack}
+          onChange={handleFilterChange}
+          placeholder="Minimum Base Salary"
+        />
+        <input
+          type="text"
+          name="role"
+          value={filters.role}
+          onChange={handleFilterChange}
+          placeholder="Search Company Name"
+        />
+      </div>
       <div
         className="job-listings"
-        id="job-listings"
         style={{
           opacity: viewMore ? 0.3 : 1.0,
         }}
