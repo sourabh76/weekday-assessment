@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import getSymbolFromCurrency from "currency-symbol-map";
 import Timer from "./assets/images/timer.svg";
-import Company1 from "./assets/images/company1.svg";
-import Company2 from "./assets/images/company2.svg";
-import Company3 from "./assets/images/company3.svg";
 import Close from "./assets/images/close.svg";
-import DropDown from "./assets/images/drop-down.svg";
 import "./App.css";
 
 function App() {
@@ -13,29 +9,15 @@ function App() {
   const [viewMore, setViewMore] = useState(false);
   const [filteredJobListings, setFilteredJobListings] = useState([]);
   const [filters, setFilters] = useState({
-    minExperience: "",
-    companyName: "",
-    location: "",
-    remote: "",
-    techStack: "",
     role: "",
-    minBasePay: "",
+    totalEmployees: "",
+    minExperience: "",
+    remote: "",
+    salary: "",
+    companyName: "",
   });
   const [page, setPage] = useState(1);
   const perPage = 10;
-
-  // This function is used to get random company image
-  const getCompanyImg = () => {
-    const val = Math.floor(Math.random() * 3);
-    switch (val) {
-      case 1:
-        return Company1;
-      case 2:
-        return Company2;
-      default:
-        return Company3;
-    }
-  };
 
   useEffect(() => {
     fetchJobListings(page);
@@ -75,24 +57,22 @@ function App() {
   const applyFilters = () => {
     const filteredJobs = jobListings.filter((job) => {
       return (
-        (!filters.minExperience || job.experience >= filters.minExperience) &&
+        (!filters.role ||
+          job.jobRole.toLowerCase().includes(filters.role.toLowerCase())) &&
+        (!filters.minExperience || job.minExp >= filters.minExperience) &&
         (!filters.companyName ||
-          job.company
+          job.companyName
             .toLowerCase()
             .includes(filters.companyName.toLowerCase())) &&
-        (!filters.location ||
-          job.location
-            .toLowerCase()
-            .includes(filters.location.toLowerCase())) &&
         (!filters.remote ||
-          job.remote.toLowerCase().includes(filters.remote.toLowerCase())) &&
-        (!filters.techStack ||
-          job.techStack
-            .toLowerCase()
-            .includes(filters.techStack.toLowerCase())) &&
-        (!filters.role ||
-          job.role.toLowerCase().includes(filters.role.toLowerCase())) &&
-        (!filters.minBasePay || job.minBasePay >= filters.minBasePay)
+          job.remote?.toLowerCase().includes(filters.remote.toLowerCase()) ||
+          job) &&
+        (!filters.totalEmployees ||
+          job.totalEmployees
+            ?.toLowerCase()
+            .includes(filters.totalEmployees.toLowerCase()) ||
+          job) &&
+        (!filters.salary || job.minJdSalary >= filters.salary)
       );
     });
     setFilteredJobListings(filteredJobs);
@@ -119,10 +99,10 @@ function App() {
   }, []);
 
   const handleFilterChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
 
@@ -131,22 +111,22 @@ function App() {
       <div className="filters">
         <input
           type="text"
-          name="minExperience"
+          name="role"
           value={filters.role}
           onChange={handleFilterChange}
           placeholder="Roles"
         />
         <input
           type="text"
-          name="companyName"
-          value={filters.companyName}
+          name="totalEmployees"
+          value={filters.totalEmployees}
           onChange={handleFilterChange}
           placeholder="Number Of Employees"
         />
         <input
           type="text"
-          name="location"
-          value={filters.location}
+          name="minExperience"
+          value={filters.minExperience}
           onChange={handleFilterChange}
           placeholder="Experience"
         />
@@ -159,15 +139,15 @@ function App() {
         />
         <input
           type="text"
-          name="techStack"
-          value={filters.techStack}
+          name="salary"
+          value={filters.salary}
           onChange={handleFilterChange}
           placeholder="Minimum Base Salary"
         />
         <input
           type="text"
-          name="role"
-          value={filters.role}
+          name="companyName"
+          value={filters.companyName}
           onChange={handleFilterChange}
           placeholder="Search Company Name"
         />
@@ -179,16 +159,16 @@ function App() {
         }}
       >
         {filteredJobListings.map((listing, index) => (
-          <div className="job">
+          <div className="job" key={index}>
             <div className="job-card" key={index}>
               <p className="post-time">
                 <img src={Timer} alt="timer" /> &nbsp; Posted 10 days ago
               </p>
               <div className="job-name">
-                <img src={getCompanyImg()} alt="logo" />
+                <img src={listing.logoUrl} alt="logo" />
                 <div className="job-info">
                   <div className="info-container">
-                    <h3>{listing.jdUid.slice(-5)}</h3>
+                    <h3>{listing.companyName}</h3>
                     <h2>{listing.jobRole}</h2>
                   </div>
                   <p>{listing.location}</p>
